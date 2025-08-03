@@ -1,0 +1,42 @@
+# Flutter-specific ignores
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.packages
+.idea/
+.vscode/
+build/
+*.iml
+*.lock
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
+
+# IDE-specific ignores
+.idea/
+.vscode/
+
+# Dependency-related ignores
+pubspec.lock
+
+# Compiled code
+*.apk
+*.aab
+*.ipa
+*.app
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+*.lib
+*.exp
+*.pdb
+.env
+
+# Logs and temporary files
+*.log
+*.tmp
+temp/

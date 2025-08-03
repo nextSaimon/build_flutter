@@ -1,0 +1,117 @@
+name: Flutter All Platforms Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_android:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Build Android APK
+        run: flutter build apk --release
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build_ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Build iOS App
+        run: flutter build ios --release --no-codesign
+      - name: Upload iOS App artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app
+          path: build/ios/iphoneos/Runner.app
+
+  build_macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Build macOS App
+        run: flutter build macos --release
+      - name: List contents of release folder
+        run: ls -R build/macos/Build/Products/Release/
+      - name: Upload macOS App artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-app
+          path: build/macos/Build/Products/Release/*.app
+
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Install GTK development files
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev
+      - name: Enable Linux desktop
+        run: flutter config --enable-linux-desktop
+      - name: Build Linux App
+        run: flutter build linux --release
+      - name: Upload Linux App artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-app
+          path: build/linux/x64/release/bundle
+
+  build_web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Build Web App
+        run: flutter build web --release
+      - name: Upload Web App artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-app
+          path: build/web
+
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.x"
+      - name: Enable Windows desktop support
+        run: flutter config --enable-windows-desktop
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Build Windows executable
+        run: flutter build windows --release
+      - name: Upload Windows build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/runner/

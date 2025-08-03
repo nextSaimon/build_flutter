@@ -1,0 +1,29 @@
+name: Flutter Android Archive (AAR) Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x' # Use a specific Flutter version or 'stable'
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Build Android Archive (AAR)
+        run: flutter build aar --release
+
+      - name: Upload Android Archive (AAR) artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aar
+          path: build/host/outputs/repo
